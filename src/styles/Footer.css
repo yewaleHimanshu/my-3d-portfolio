@@ -1,0 +1,12 @@
+.footer {
+    padding: 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+  }
+  
+  .footer p {
+    margin: 0;
+    font-size: 1rem;
+    color: #ccc;
+  }

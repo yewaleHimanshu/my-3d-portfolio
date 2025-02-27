@@ -1,0 +1,16 @@
+.certifications {
+    padding: 4rem 2rem;
+    text-align: center;
+  }
+  
+  .certifications h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #00d4ff;
+  }
+  
+  .certs-3d {
+    height: 300px;
+    width: 100%;
+    position: relative;
+  }
