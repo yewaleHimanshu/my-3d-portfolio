@@ -1,124 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Box, OrbitControls, Text } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Skills from './components/Skills';
-import Experience from './components/Experience';
-import Certifications from './components/Certifications';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import Scene from './components/Scene';
+import InfoPanel from './components/InfoPanel';
 import './styles/App.css';
 
-const FloatingBox: React.FC = () => {
-  const meshRef = React.useRef<THREE.Mesh>(null!);
-  useFrame((state, delta) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.5;
-    }
-  });
-  return (
-    <Box ref={meshRef} args={[1, 1, 1]} position={[0, 0, 0]}>
-      <meshStandardMaterial color="purple" />
-    </Box>
-  );
-};
-
-interface SkillCardProps {
-  skill: string;
-  index: number; // Add index to calculate unique orbit
-}
-
-const SkillCard: React.FC<SkillCardProps> = ({ skill, index }) => {
-  const groupRef = React.useRef<THREE.Group>(null!);
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      // Orbit around the center
-      const angle = index * 0.7 + state.clock.getElapsedTime() * 1; // Faster orbit
-      groupRef.current.position.x = Math.sin(angle) * 5;
-      groupRef.current.position.y = Math.cos(angle) * 5 - 2;
-    }
-  });
-  return (
-    <group ref={groupRef}>
-      <Text color="white" fontSize={0.5} position={[0, 0, 0.1]}>
-        {skill}
-      </Text>
-      <mesh>
-        <boxGeometry args={[2, 1, 0.1]} />
-        <meshStandardMaterial color="#1e90ff" />
-      </mesh>
-    </group>
-  );
-};
-
-interface CertBadgeProps {
-  name: string;
-  index: number; // Add index for orbit
-}
-
-const CertBadge: React.FC<CertBadgeProps> = ({ name, index }) => {
-  const groupRef = React.useRef<THREE.Group>(null!);
-  useFrame((state, delta) => {
-    if (groupRef.current) {
-      // Slower orbit
-      const angle = index * 1.5 + state.clock.getElapsedTime() * 0.5;
-      groupRef.current.position.x = Math.sin(angle) * 3;
-      groupRef.current.position.y = Math.cos(angle) * 3 - 6;
-    }
-  });
-  return (
-    <group ref={groupRef}>
-      <Text color="white" fontSize={0.3} position={[0, 0, 0.1]}>
-        {name}
-      </Text>
-      <mesh>
-        <circleGeometry args={[0.8, 32]} />
-        <meshStandardMaterial color="#ff4500" />
-      </mesh>
-    </group>
-  );
-};
-
 const App: React.FC = () => {
-  const skills: string[] = [
-    'C#', 'React JS', 'Power Apps', 'Power Automate', 'Power BI',
-    'Azure OpenAI', 'MS Bot Framework', 'ASP.NET', 'Entity Framework'
-  ];
-  const certs: string[] = [
-    'AZ-900 Azure Fundamentals',
-    'MS-900 Microsoft 365 Fundamentals',
-    'AI-900 Azure AI Fundamentals',
-    'PL-900 Power Platform Fundamentals'
-  ];
+  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <div className="app">
-      <Navbar />
+      {/* ── Spaceship cockpit HUD ── */}
+      <div className="hud-frame">
+        {/* Corner brackets */}
+        <div className="hud-corner hud-tl"></div>
+        <div className="hud-corner hud-tr"></div>
+        <div className="hud-corner hud-bl"></div>
+        <div className="hud-corner hud-br"></div>
+
+        {/* Cockpit window edge vignette */}
+        <div className="hud-viewport"></div>
+
+        {/* Scanline overlay */}
+        <div className="hud-scanlines"></div>
+
+        {/* Top bar */}
+        <div className="hud-top-bar">
+          <span className="hud-text-flicker">SYS: ONLINE</span>
+          <span>◆ NAVIGATION ARRAY ◆</span>
+          <span className="hud-text-flicker">SHIELD: 100%</span>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="hud-bottom-bar">
+          <span>LAT 28.5° · LON -80.6°</span>
+          <span>▸ SECTOR 7G ▸</span>
+          <span>WARP: STANDBY</span>
+        </div>
+
+        {/* Left side readouts */}
+        <div className="hud-side hud-left-side">
+          <div className="hud-gauge">
+            <span className="hud-gauge-label">THRUST</span>
+            <div className="hud-gauge-bar"><div className="hud-gauge-fill" style={{ height: '72%' }}></div></div>
+          </div>
+          <div className="hud-gauge">
+            <span className="hud-gauge-label">FUEL</span>
+            <div className="hud-gauge-bar"><div className="hud-gauge-fill hud-fuel" style={{ height: '91%' }}></div></div>
+          </div>
+        </div>
+
+        {/* Right side readouts */}
+        <div className="hud-side hud-right-side">
+          <div className="hud-gauge">
+            <span className="hud-gauge-label">O₂</span>
+            <div className="hud-gauge-bar"><div className="hud-gauge-fill hud-o2" style={{ height: '88%' }}></div></div>
+          </div>
+          <div className="hud-gauge">
+            <span className="hud-gauge-label">TEMP</span>
+            <div className="hud-gauge-bar"><div className="hud-gauge-fill hud-temp" style={{ height: '34%' }}></div></div>
+          </div>
+        </div>
+
+        {/* Center reticle */}
+        <div className="hud-reticle">
+          <div className="hud-reticle-ring"></div>
+          <div className="hud-reticle-dot"></div>
+        </div>
+      </div>
+
+      <div className="overlay-header">
+        <h1>Himanshu Yewale</h1>
+        <p>Full Stack Developer · Power Platform · Cloud</p>
+      </div>
+
       <Canvas
-        style={{ position: 'absolute', top: 0, left: 0, zIndex: -1 }}
-        gl={{ alpha: true }}
-        camera={{ position: [0, 0, 20], fov: 75 }} // Increased camera distance
+        camera={{ position: [0, 15, 35], fov: 60 }}
+        style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}
+        gl={{
+          antialias: true,
+          alpha: false,
+          toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.2,
+        }}
+        shadows
       >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <FloatingBox />
-        {skills.map((skill: string, index: number) => (
-          <SkillCard key={index} skill={skill} index={index} />
-        ))}
-        {certs.map((cert: string, index: number) => (
-          <CertBadge key={index} name={cert} index={index} />
-        ))}
-        <OrbitControls enableZoom={true} />
+        <Scene selected={selected} onSelect={setSelected} />
       </Canvas>
-      <Hero />
-      <Skills />
-      <Experience />
-      <Certifications />
-      <Contact />
-      <Footer />
+
+      <AnimatePresence>
+        {selected && (
+          <InfoPanel planetId={selected} onClose={() => setSelected(null)} />
+        )}
+      </AnimatePresence>
+
+      {!selected && (
+        <div className="nav-hint">
+          Click a planet to explore · Scroll to zoom · Drag to rotate
+        </div>
+      )}
     </div>
   );
 };

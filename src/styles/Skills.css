@@ -9,8 +9,29 @@
     color: #00d4ff;
   }
   
-  .skills-3d {
-    height: 400px;
-    width: 100%;
-    position: relative;
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .skill-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #fff;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    cursor: default;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .skill-card:hover {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: #00d4ff;
   }

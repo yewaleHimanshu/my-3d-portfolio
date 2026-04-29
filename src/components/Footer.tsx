@@ -4,7 +4,7 @@ import '../styles/Footer.css';
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-      <p>© 2025 Himanshu Yewale. All rights reserved.</p>
+      <p>© 2026 Himanshu Yewale. All rights reserved.</p>
     </footer>
   );
 };

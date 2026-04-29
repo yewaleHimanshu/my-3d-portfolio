@@ -51,8 +51,9 @@ const Experience: React.FC = () => {
   return (
     <section id="experience" className="experience">
       <motion.h2
-        initial={{ x: -100 }}
-        animate={{ x: 0 }}
+        initial={{ x: -100, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
         Experience
