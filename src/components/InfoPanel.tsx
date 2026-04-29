@@ -134,13 +134,33 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ planetId, onClose }) => {
   return (
     <motion.div
       className="info-panel"
-      initial={{ opacity: 0, x: 300 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 300 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+      initial={{ opacity: 0, y: '100%' }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: '100%' }}
+      transition={{ type: 'spring', damping: 28, stiffness: 180 }}
     >
+      {/* HUD frame decorations */}
+      <div className="panel-hud-frame">
+        <div className="panel-hud-corner panel-hud-tl"></div>
+        <div className="panel-hud-corner panel-hud-tr"></div>
+        <div className="panel-hud-corner panel-hud-bl"></div>
+        <div className="panel-hud-corner panel-hud-br"></div>
+        <div className="panel-hud-line panel-hud-line-top"></div>
+        <div className="panel-hud-scanlines"></div>
+      </div>
+
+      {/* Drag handle */}
+      <div className="panel-handle">
+        <div className="panel-handle-bar"></div>
+      </div>
+
       <button className="close-btn" onClick={onClose}>✕</button>
-      <h2>{content.title}</h2>
+
+      <div className="panel-header-row">
+        <div className="panel-hud-indicator"></div>
+        <h2>{content.title}</h2>
+        <span className="panel-hud-tag">◆ {planetId.toUpperCase()} ◆</span>
+      </div>
 
       {content.type === 'about' && (
         <div className="panel-content">

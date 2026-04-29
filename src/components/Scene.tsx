@@ -151,14 +151,14 @@ const Scene: React.FC<SceneProps> = ({ selected, onSelect }) => {
     if (!controlsRef.current) return;
 
     if (selected === 'about') {
-      tempTarget.copy(sunPos);
-      tempCamPos.set(4, 3, 6);
+      tempTarget.set(0, 1, 0);
+      tempCamPos.set(3, 2, 5);
       camera.position.lerp(tempCamPos, 0.03);
       controlsRef.current.target.lerp(tempTarget, 0.03);
     } else if (selected && planetPositions.current[selected]) {
       const pos = planetPositions.current[selected];
-      tempTarget.copy(pos);
-      tempCamPos.set(pos.x + 4, pos.y + 3, pos.z + 6);
+      tempTarget.set(pos.x, pos.y + 0.5, pos.z);
+      tempCamPos.set(pos.x + 2.5, pos.y + 1.5, pos.z + 4);
       camera.position.lerp(tempCamPos, 0.03);
       controlsRef.current.target.lerp(tempTarget, 0.03);
     } else {
